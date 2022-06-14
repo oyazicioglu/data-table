@@ -99,6 +99,24 @@ export class Table {
     }
 
     /**
+     * @param {Row} row
+     * @returns {Row}
+     */
+    changeRow(row) {
+        if (!this.#rows) {
+            return;
+        }
+
+        const foundRow = this.#rows.indexOf(row);
+        if (foundRow === -1) {
+            this.addRow(row);
+        }
+
+        this.#rows[foundRow] = row;
+        return row;
+    }
+
+    /**
      * @param {Column} column
      */
     addColumn(column) {
@@ -133,5 +151,23 @@ export class Table {
         if (index > -1) {
             this.#columns.splice(index, 1);
         }
+    }
+
+    /**
+     * @param {Column} column
+     * @returns {Column}
+     */
+    changeColumn(column) {
+        if (!this.#columns) {
+            return;
+        }
+
+        const foundColumn = this.#columns.indexOf(column);
+        if (foundColumn === -1) {
+            this.addColumn(column);
+        }
+
+        this.#columns[foundColumn] = column;
+        return column;
     }
 }
