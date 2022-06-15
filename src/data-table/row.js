@@ -20,7 +20,7 @@ export class Row {
      * @param {boolean} selectable
      * @param {boolean} visible
      */
-    constructor(cells, visible = true, selectable = true) {
+    constructor(cells = [], visible = true, selectable = true) {
         this.uuid = uuid();
         this.setCells(cells);
         this.setVisiblity(visible);

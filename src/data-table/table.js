@@ -2,6 +2,7 @@ import { Column } from './column.js';
 import { Header } from './header.js';
 import { Row } from './row.js';
 import { v4 as uuid } from 'uuid';
+import { Cell } from './cell.js';
 
 export class Table {
     /** @type {Header[]} */
@@ -169,5 +170,54 @@ export class Table {
 
         this.#columns[foundColumn] = column;
         return column;
+    }
+
+    getRowCount() {
+        return this.#rows?.length;
+    }
+
+    getColumnCount() {
+        return this.#columns?.length;
+    }
+
+    /**
+     * @returns {Row}
+     */
+    createEmptyRow() {
+        const newRow = new Row();
+
+        if (!this.#columns) {
+            this.#columns = [];
+        }
+
+        this.#columns.forEach((column) => {
+            newRow.addCell(new Cell('', newRow, column));
+        });
+
+        if (!this.#rows) {
+            this.#rows = [];
+        }
+
+        this.#rows.push(newRow);
+        return newRow;
+    }
+
+    createEmptyColumn() {
+        const newColumn = new Column();
+
+        if (!this.#rows) {
+            this.#rows = [];
+        }
+
+        this.#rows.forEach((row) => {
+            newColumn.addCell(new Cell('', row, newColumn));
+        });
+
+        if (!this.#columns) {
+            this.#columns = [];
+        }
+
+        this.#columns.push(newColumn);
+        return newColumn;
     }
 }

@@ -20,7 +20,7 @@ export class Column {
      * @param {boolean} selectable
      * @param {boolean} visible
      */
-    constructor(cells, selectable = true, visible = true) {
+    constructor(cells = [], selectable = true, visible = true) {
         this.uuid = uuid();
         this.setCells(cells);
         this.setVisiblity(visible);
@@ -81,6 +81,17 @@ export class Column {
 
     getCells() {
         return this.#cells;
+    }
+
+    /**
+     * @param {Cell[]} cell
+     */
+    addCell(cell) {
+        if (!this.#cells) {
+            this.#cells = [];
+        }
+
+        this.#cells.push(cell);
     }
 
     /**
