@@ -93,8 +93,8 @@ export class Table {
             return;
         }
 
-        const indexOf = this.#rows.indexOf(index);
-        if (index > -1) {
+        const foundRow = this.#rows[index];
+        if (foundRow) {
             this.#rows.splice(index, 1);
         }
     }
@@ -143,13 +143,13 @@ export class Table {
     /**
      * @param {number} index
      */
-    removeRowByIndex(index) {
+    removeColumnByIndex(index) {
         if (!this.#columns) {
             return;
         }
 
-        const indexOf = this.#columns.indexOf(index);
-        if (index > -1) {
+        const foundColumn = this.#columns[index];
+        if (foundColumn) {
             this.#columns.splice(index, 1);
         }
     }

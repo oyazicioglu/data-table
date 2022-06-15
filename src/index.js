@@ -20,9 +20,12 @@ const table = new Table(rows, columns, []);
 table.createEmptyColumn();
 table.createEmptyRow();
 
-table.getRows().forEach((row) => {
-    console.log(row.toValueObject());
-});
+console.log(table.getRows().length);
+
+table.removeRowByIndex(0);
+
+console.log(table.getRows().length);
+
 /* table.getColumns().forEach((column) => {
     console.log(column.toValueObject());
 });
