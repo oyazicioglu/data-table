@@ -180,6 +180,21 @@ export class Table {
         return this.#columns?.length;
     }
 
+    getHeadersCount() {
+        return this.#headers?.length;
+    }
+
+    /**
+     * @param {Header} header
+     */
+    addHeader(header) {
+        if (!this.#headers) {
+            this.#headers = [];
+        }
+
+        this.#headers.push(header);
+    }
+
     /**
      * @returns {Row}
      */
@@ -237,11 +252,13 @@ export class Table {
         let newColumns = [];
 
         if (headers?.length > 0) {
+            const newHeader = new Header();
             newHeaders = headers.map((header) => {
                 const newColumn = new Column();
                 newColumn.addCell(new Cell(header, null, newColumn));
                 newColumns.push(newColumn);
-                return new Header(header.value);
+                newHeader.addCell(new Cell(header.value, null, newColumn));
+                return newHeader;
             });
         }
 

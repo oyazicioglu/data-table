@@ -20,7 +20,7 @@ export class Header extends Row {
      * @param {boolean} visible
      * @param {boolean} sortable
      */
-    constructor(cells, name = undefined, selectable = true, visible = true, sortable = true) {
+    constructor(cells = [], name = undefined, selectable = true, visible = true, sortable = true) {
         super(cells, visible, selectable);
         this.setName(name);
         this.setSortable(sortable);

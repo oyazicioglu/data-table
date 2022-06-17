@@ -12,6 +12,12 @@ const data = {
 const table = new Table();
 table.createFromJSON(data);
 
-table.getColumns().forEach((column) => {
+/* table.getColumns().forEach((column) => {
     console.log(column.toValueObject());
+}); */
+
+table.getHeaders().forEach((header) => {
+    header.getCells().forEach((cell) => {
+        console.log(cell.toValueObject());
+    });
 });
