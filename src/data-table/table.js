@@ -1,8 +1,8 @@
 import { Column } from './column.js';
-import { Header } from './header.js';
 import { Row } from './row.js';
 import { v4 as uuid } from 'uuid';
 import { Cell } from './cell.js';
+import '../index.d.js';
 
 export class Table {
     /** @type {Row[]} */
@@ -38,12 +38,16 @@ export class Table {
         this.#columns = columns;
     }
 
-    getRows() {
-        return this.#rows;
+    getRows(includeHeader = false) {
+        if (includeHeader) {
+            return this.#rows;
+        } else {
+            return this.#rows.filter((row) => !row.isHeader() && row.isVisible() === true);
+        }
     }
 
     getColumns() {
-        return this.#columns;
+        return this.#columns.filter((column) => column.isVisible() === true);
     }
 
     /**
@@ -156,12 +160,20 @@ export class Table {
         return column;
     }
 
-    getRowCount() {
-        return this.#rows?.length;
+    getRowCount(includeHidden = false) {
+        if (includeHidden) {
+            return this.#rows?.length;
+        } else {
+            return this.#rows?.filter((row) => row.isVisible() === true).length;
+        }
     }
 
-    getColumnCount() {
-        return this.#columns?.length;
+    getColumnCount(includeHidden = false) {
+        if (includeHidden) {
+            return this.#columns?.length;
+        } else {
+            return this.#columns?.filter((column) => column.isVisible() === true).length;
+        }
     }
 
     /**
@@ -205,40 +217,52 @@ export class Table {
         return newColumn;
     }
 
+    getHeader() {
+        return this.#rows.find((row) => row.isHeader());
+    }
+
     /**
      *
      * @param {Object} json
      * @param {array} json.rows
-     * @param {array} json.columns
+     * @param {ColumnDefs[]} json.columns
      */
     createFromJSON(json) {
         const { columns, rows } = json;
 
         /** @type {Row[]} */
-        let newRows = [];
+        const newRows = [];
 
         /** @type {Column[]} */
-        let newColumns = [];
+        const newColumns = [];
 
         if (columns?.length > 0) {
+            const headerRow = new Row();
+            headerRow.setType('header');
             columns.map((column) => {
-                const newColumn = new Column();
-                newColumn.addCell(new Cell(column.name, null, newColumn));
+                const newColumn = new Column([], column.selectable, column.visible, column.type);
+                newColumn.setName(column.name);
+                const newCell = new Cell(column.name, headerRow, newColumn);
+                newColumn.addCell(newCell);
+                headerRow.addCell(newCell);
                 newColumns.push(newColumn);
             });
+            newRows.push(headerRow);
         }
 
         if (rows?.length > 0) {
-            newRows = rows.map((row) => {
+            rows.map((row) => {
                 const newRow = new Row();
                 for (let index = 0; index < Object.values(row).length; index++) {
                     const element = Object.values(row)[index];
                     const newCell = new Cell(element, newRow, newColumns[index]);
                     newRow.addCell(newCell);
-                    newColumns[index].addCell(newCell);
+                    if (Array.isArray(newColumns) && newColumns[index]) {
+                        newColumns[index].addCell(newCell);
+                    }
                 }
 
-                return newRow;
+                newRows.push(newRow);
             });
         }
 
