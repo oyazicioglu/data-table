@@ -14,7 +14,11 @@ export class Column {
     /** @type {string} */
     uuid;
 
-    #type = 'column';
+    /** @type {string} */
+    #type = 'string';
+
+    /** @type {string} */
+    #name;
 
     /**
      *
@@ -22,11 +26,12 @@ export class Column {
      * @param {boolean} selectable
      * @param {boolean} visible
      */
-    constructor(cells = [], selectable = true, visible = true) {
+    constructor(cells = [], selectable = true, visible = true, type = 'string') {
         this.uuid = uuid();
         this.setCells(cells);
         this.setVisiblity(visible);
         this.setSelectable(selectable);
+        this.setType(type);
     }
 
     /**
@@ -121,6 +126,22 @@ export class Column {
         return this.#cells[index];
     }
 
+    setName(name) {
+        this.#name = name;
+    }
+
+    getName() {
+        return this.#name;
+    }
+
+    setType(type) {
+        this.#type = type;
+    }
+
+    getType() {
+        return this.#type;
+    }
+
     toValueObject() {
         const cells = this.getCells()?.map((cell) => {
             return cell.toValueObject();
@@ -132,6 +153,7 @@ export class Column {
             visible: this.isVisible(),
             cells: cells,
             type: this.#type,
+            name: this.#name,
         };
     }
 }
