@@ -232,6 +232,8 @@ export class Table {
         const { headers, rows } = json;
         let newHeaders = [];
         let newRows = [];
+
+        /** @type {Column[]} */
         let newColumns = [];
 
         if (headers?.length > 0) {
@@ -248,14 +250,14 @@ export class Table {
                 const newRow = new Row();
                 for (let index = 0; index < Object.values(row).length; index++) {
                     const element = Object.values(row)[index];
-                    newRow.addCell(new Cell(element, newRow, newColumns[index]));
+                    const newCell = new Cell(element, newRow, newColumns[index]);
+                    newRow.addCell(newCell);
+                    newColumns[index].addCell(newCell);
                 }
 
                 return newRow;
             });
         }
-
-        // console.log(newHeaders.length, newColumns.length, newRows.length);
 
         this.#setHeaders(newHeaders);
         this.#setRows(newRows);
