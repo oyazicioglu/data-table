@@ -84,13 +84,14 @@ export class Column {
     }
 
     /**
-     * @param {Cell[]} cell
+     * @param {Cell} cell
      */
     addCell(cell) {
         if (!this.#cells) {
             this.#cells = [];
         }
 
+        cell.setColumn(this);
         this.#cells.push(cell);
     }
 

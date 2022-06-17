@@ -23,7 +23,7 @@ export class Cell {
 
     /**
      *
-     * @param {string | number | array | boolean | Date} value
+     * @param {any} value
      * @param {boolean} selectable
      * @param {boolean} visible
      * @param {Row} row
@@ -61,7 +61,7 @@ export class Cell {
     }
 
     /**
-     * @param {string | number | array | boolean | Date} value
+     * @param {any} value
      */
     setValue(value) {
         this.#value = value;

@@ -22,7 +22,7 @@ export class Table {
      * @param {Column[]} columns
      * @param {Header[]} headers
      */
-    constructor(rows, columns, headers) {
+    constructor(rows = [], columns = [], headers = []) {
         this.uuid = uuid();
         this.#setRows(rows);
         this.#setColumns(columns);
@@ -219,5 +219,46 @@ export class Table {
 
         this.#columns.push(newColumn);
         return newColumn;
+    }
+
+    /**
+     *
+     * @param {Object} json
+     * @param {array} json.rows
+     * @param {array} json.columns
+     * @param {array} json.headers
+     */
+    createFromJSON(json) {
+        const { headers, rows } = json;
+        let newHeaders = [];
+        let newRows = [];
+        let newColumns = [];
+
+        if (headers?.length > 0) {
+            newHeaders = headers.map((header) => {
+                const newColumn = new Column();
+                newColumn.addCell(new Cell(header, null, newColumn));
+                newColumns.push(newColumn);
+                return new Header(header.value);
+            });
+        }
+
+        if (rows?.length > 0) {
+            newRows = rows.map((row) => {
+                const newRow = new Row();
+                for (let index = 0; index < Object.values(row).length; index++) {
+                    const element = Object.values(row)[index];
+                    newRow.addCell(new Cell(element, newRow, newColumns[index]));
+                }
+
+                return newRow;
+            });
+        }
+
+        // console.log(newHeaders.length, newColumns.length, newRows.length);
+
+        this.#setHeaders(newHeaders);
+        this.#setRows(newRows);
+        this.#setColumns(newColumns);
     }
 }

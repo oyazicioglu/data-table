@@ -83,13 +83,14 @@ export class Row {
     }
 
     /**
-     * @param {Cell[]} cell
+     * @param {Cell} cell
      */
     addCell(cell) {
         if (!this.#cells) {
             this.#cells = [];
         }
 
+        cell.setRow(this);
         this.#cells.push(cell);
     }
 

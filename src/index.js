@@ -16,15 +16,27 @@ const columns = [
     new Column([new Cell('L', null, null, true, true)]),
 ];
 
-const table = new Table(rows, columns, []);
-table.createEmptyColumn();
-table.createEmptyRow();
+const data = {
+    headers: ['Header1', 'Header2', 'Header3'],
+    rows: [
+        ['A', 'B', 'C'],
+        ['D', 'E', 'F'],
+        ['F', 'G', 'H'],
+    ],
+};
 
-console.log(table.getRows().length);
+const table = new Table();
+table.createFromJSON(data);
 
-table.removeRowByIndex(0);
+table.getColumns().forEach((row) => {
+    console.log(row.toValueObject());
+});
 
-console.log(table.getRows().length);
+/* table.getRows().forEach((row) => {
+    row.getCells().forEach((cell) => {
+        console.log(cell.toValueObject());
+    });
+}); */
 
 /* table.getColumns().forEach((column) => {
     console.log(column.toValueObject());

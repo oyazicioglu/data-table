@@ -1,22 +1,28 @@
-import { Cell } from './cell.js';
 import { v4 as uuid } from 'uuid';
+import { Cell } from './cell.js';
+import { Row } from './row.js';
 
-export class Header extends Cell {
+export class Header extends Row {
     /** @type {boolean} */
     #sortable = true;
+
+    /** @type {string} */
+    #name;
 
     /** @type {string} */
     uuid;
 
     /**
      *
-     * @param {string | number | array | boolean | Date} value
+     * @param {Cell[]} cells
+     * @param {string} name
      * @param {boolean} selectable
      * @param {boolean} visible
      * @param {boolean} sortable
      */
-    constructor(value, selectable = true, visible = true, sortable = true) {
-        super(value, selectable, visible);
+    constructor(cells, name = undefined, selectable = true, visible = true, sortable = true) {
+        super(cells, visible, selectable);
+        this.setName(name);
         this.setSortable(sortable);
         this.uuid = uuid();
     }
@@ -30,5 +36,15 @@ export class Header extends Cell {
 
     getSortable() {
         return this.#sortable;
+    }
+
+    setName(name) {
+        if (name) {
+            this.#name = name;
+        }
+    }
+
+    getName() {
+        return this.#name;
     }
 }
