@@ -5,8 +5,8 @@ import { v4 as uuid } from 'uuid';
 import { Cell } from './cell.js';
 
 export class Table {
-    /** @type {Header[]} */
-    #headers;
+    /** @type {Header} */
+    #header;
 
     /** @type {Row[]} */
     #rows;
@@ -20,13 +20,13 @@ export class Table {
     /**
      * @param {Row[]} rows
      * @param {Column[]} columns
-     * @param {Header[]} headers
+     * @param {Header} header
      */
-    constructor(rows = [], columns = [], headers = []) {
+    constructor(rows = [], columns = [], header = []) {
         this.uuid = uuid();
         this.#setRows(rows);
         this.#setColumns(columns);
-        this.#setHeaders(headers);
+        this.#setHeader(header);
     }
 
     /**
@@ -44,10 +44,10 @@ export class Table {
     }
 
     /**
-     * @param {Header[]} headers
+     * @param {Header} header
      */
-    #setHeaders(headers) {
-        this.#headers = headers;
+    #setHeader(header) {
+        this.#header = header;
     }
 
     getRows() {
@@ -58,8 +58,8 @@ export class Table {
         return this.#columns;
     }
 
-    getHeaders() {
-        return this.#headers;
+    getHeader() {
+        return this.#header;
     }
 
     /**
@@ -180,21 +180,6 @@ export class Table {
         return this.#columns?.length;
     }
 
-    getHeadersCount() {
-        return this.#headers?.length;
-    }
-
-    /**
-     * @param {Header} header
-     */
-    addHeader(header) {
-        if (!this.#headers) {
-            this.#headers = [];
-        }
-
-        this.#headers.push(header);
-    }
-
     /**
      * @returns {Row}
      */
@@ -241,24 +226,26 @@ export class Table {
      * @param {Object} json
      * @param {array} json.rows
      * @param {array} json.columns
-     * @param {array} json.headers
+     * @param {array} json.header
      */
     createFromJSON(json) {
-        const { headers, rows } = json;
-        let newHeaders = [];
+        const { header, rows } = json;
+
+        /** @type {Row[]} */
         let newRows = [];
 
         /** @type {Column[]} */
         let newColumns = [];
 
-        if (headers?.length > 0) {
-            const newHeader = new Header();
-            newHeaders = headers.map((header) => {
+        /** @type {Header} */
+        let newHeader = new Header();
+
+        if (header?.length > 0) {
+            header.map((value) => {
                 const newColumn = new Column();
-                newColumn.addCell(new Cell(header, null, newColumn));
+                newColumn.addCell(new Cell(value, null, newColumn));
                 newColumns.push(newColumn);
-                newHeader.addCell(new Cell(header.value, null, newColumn));
-                return newHeader;
+                newHeader.addCell(new Cell(value, null, newColumn));
             });
         }
 
@@ -276,7 +263,7 @@ export class Table {
             });
         }
 
-        this.#setHeaders(newHeaders);
+        this.#setHeader(newHeader);
         this.#setRows(newRows);
         this.#setColumns(newColumns);
     }
