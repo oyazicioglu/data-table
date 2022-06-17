@@ -21,12 +21,14 @@ export class Row {
      * @param {Cell[]} cells
      * @param {boolean} selectable
      * @param {boolean} visible
+     * @param {RowType} type
      */
-    constructor(cells = [], visible = true, selectable = true) {
+    constructor(cells = [], visible = true, selectable = true, type = 'row') {
         this.uuid = uuid();
         this.setCells(cells);
         this.setVisiblity(visible);
         this.setSelectable(selectable);
+        this.setType(type);
     }
 
     /**
@@ -118,6 +120,18 @@ export class Row {
         }
 
         return this.#cells[index];
+    }
+
+    setType(type) {
+        this.#type = type;
+    }
+
+    getType() {
+        return this.#type;
+    }
+
+    isHeader() {
+        return this.#type === 'header';
     }
 
     toValueObject() {
