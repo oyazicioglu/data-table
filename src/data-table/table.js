@@ -5,9 +5,6 @@ import { v4 as uuid } from 'uuid';
 import { Cell } from './cell.js';
 
 export class Table {
-    /** @type {Header} */
-    #header;
-
     /** @type {Row[]} */
     #rows;
 
@@ -20,13 +17,11 @@ export class Table {
     /**
      * @param {Row[]} rows
      * @param {Column[]} columns
-     * @param {Header} header
      */
-    constructor(rows = [], columns = [], header = []) {
+    constructor(rows = [], columns = []) {
         this.uuid = uuid();
         this.#setRows(rows);
         this.#setColumns(columns);
-        this.#setHeader(header);
     }
 
     /**
@@ -43,23 +38,12 @@ export class Table {
         this.#columns = columns;
     }
 
-    /**
-     * @param {Header} header
-     */
-    #setHeader(header) {
-        this.#header = header;
-    }
-
     getRows() {
         return this.#rows;
     }
 
     getColumns() {
         return this.#columns;
-    }
-
-    getHeader() {
-        return this.#header;
     }
 
     /**
@@ -226,10 +210,9 @@ export class Table {
      * @param {Object} json
      * @param {array} json.rows
      * @param {array} json.columns
-     * @param {array} json.header
      */
     createFromJSON(json) {
-        const { header, rows } = json;
+        const { columns, rows } = json;
 
         /** @type {Row[]} */
         let newRows = [];
@@ -237,15 +220,11 @@ export class Table {
         /** @type {Column[]} */
         let newColumns = [];
 
-        /** @type {Header} */
-        let newHeader = new Header();
-
-        if (header?.length > 0) {
-            header.map((value) => {
+        if (columns?.length > 0) {
+            columns.map((column) => {
                 const newColumn = new Column();
-                newColumn.addCell(new Cell(value, null, newColumn));
+                newColumn.addCell(new Cell(column.name, null, newColumn));
                 newColumns.push(newColumn);
-                newHeader.addCell(new Cell(value, null, newColumn));
             });
         }
 
@@ -263,7 +242,6 @@ export class Table {
             });
         }
 
-        this.#setHeader(newHeader);
         this.#setRows(newRows);
         this.#setColumns(newColumns);
     }

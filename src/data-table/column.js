@@ -14,6 +14,8 @@ export class Column {
     /** @type {string} */
     uuid;
 
+    #type = 'column';
+
     /**
      *
      * @param {Cell[]} cells
@@ -129,6 +131,7 @@ export class Column {
             selectable: this.isSelectable(),
             visible: this.isVisible(),
             cells: cells,
+            type: this.#type,
         };
     }
 }

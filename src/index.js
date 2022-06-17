@@ -1,26 +1,31 @@
 import { Table } from './data-table/table.js';
 
 const data = {
-    header: ['Header1', 'Header2', 'Header3'],
+    columns: [
+        {
+            name: 'Name',
+            type: 'string',
+        },
+        {
+            name: 'Name',
+            type: 'string',
+        },
+        {
+            name: 'Name',
+            type: 'string',
+        },
+    ],
     rows: [
         ['A', 'B', 'C'],
         ['D', 'E', 'F'],
         ['F', 'G', 'H'],
+        ['I', 'J', 'K'],
     ],
 };
 
 const table = new Table();
 table.createFromJSON(data);
 
-table.getColumns().forEach((column) => {
-    column.getCells().forEach((cell) => {
-        console.log(cell.toValueObject());
-    });
+table.getRows().forEach((row) => {
+    console.table(row.toValueObject());
 });
-
-/* table
-    .getHeader()
-    .getCells()
-    .forEach((cell) => {
-        console.log(cell.toValueObject());
-    }); */

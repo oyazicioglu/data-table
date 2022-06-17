@@ -14,6 +14,8 @@ export class Row {
     /** @type {boolean} */
     #visible = true;
 
+    #type = 'row';
+
     /**
      *
      * @param {Cell[]} cells
@@ -128,6 +130,7 @@ export class Row {
             selectable: this.isSelectable(),
             visible: this.isVisible(),
             cells: cells,
+            type: this.#type,
         };
     }
 }
