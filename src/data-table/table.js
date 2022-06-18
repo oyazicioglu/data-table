@@ -2,7 +2,7 @@ import { Column } from './column.js';
 import { Row } from './row.js';
 import { v4 as uuid } from 'uuid';
 import { Cell } from './cell.js';
-import '../index.d.js';
+import './types.d.js';
 
 export class Table {
     /** @type {Row[]} */
@@ -20,21 +20,49 @@ export class Table {
      */
     constructor(rows = [], columns = []) {
         this.uuid = uuid();
-        this.#setRows(rows);
-        this.#setColumns(columns);
+        this.setRows(rows);
+        this.setColumns(columns);
     }
 
     /**
      * @param {Row[]} rows
      */
-    #setRows(rows) {
+    setRows(rows) {
         this.#rows = rows;
+    }
+
+    /**
+     * @param {array} rows
+     */
+    setRowsFromJSON(rows) {
+        if (rows?.length <= 0) {
+            return;
+        }
+
+        /** @type {Row[]} */
+        const newRows = [];
+
+        rows.map((row) => {
+            const newRow = new Row();
+            for (let index = 0; index < Object.values(row).length; index++) {
+                const element = Object.values(row)[index];
+                const newCell = new Cell(element, newRow, newColumns[index]);
+                newRow.addCell(newCell);
+                if (Array.isArray(newColumns) && newColumns[index]) {
+                    newColumns[index].addCell(newCell);
+                }
+            }
+
+            newRows.push(newRow);
+        });
+
+        this.setRows(newRows);
     }
 
     /**
      * @param {Column[]} columns
      */
-    #setColumns(columns) {
+    setColumns(columns) {
         this.#columns = columns;
     }
 
@@ -118,6 +146,34 @@ export class Table {
         }
 
         this.#columns.push(column);
+    }
+
+    /**
+     * @param {ColumnDefs[]} columns
+     */
+    setColumnsFromJSON(columns) {
+        if (columns?.length <= 0) {
+            return;
+        }
+
+        /** @type {Column[]} */
+        const newColumns = [];
+
+        if (columns?.length > 0) {
+            const headerRow = new Row();
+            headerRow.setType('header');
+            columns.map((column) => {
+                const newColumn = new Column([], column.selectable, column.visible, column.type);
+                newColumn.setName(column.name);
+                const newCell = new Cell(column.name, headerRow, newColumn);
+                newColumn.addCell(newCell);
+                headerRow.addCell(newCell);
+                newColumns.push(newColumn);
+            });
+            newRows.push(headerRow);
+        }
+
+        this.setColumns(newColumns);
     }
 
     /**
@@ -227,48 +283,11 @@ export class Table {
 
     /**
      *
-     * @param {Object} json
-     * @param {array} json.rows
-     * @param {ColumnDefs[]} json.columns
+     * @param {array} rows
+     * @param {ColumnDefs[]} columns
      */
     createFromJSON(columns, rows) {
-        /** @type {Row[]} */
-        const newRows = [];
-
-        /** @type {Column[]} */
-        const newColumns = [];
-
-        if (columns?.length > 0) {
-            const headerRow = new Row();
-            headerRow.setType('header');
-            columns.map((column) => {
-                const newColumn = new Column([], column.selectable, column.visible, column.type);
-                newColumn.setName(column.name);
-                const newCell = new Cell(column.name, headerRow, newColumn);
-                newColumn.addCell(newCell);
-                headerRow.addCell(newCell);
-                newColumns.push(newColumn);
-            });
-            newRows.push(headerRow);
-        }
-
-        if (rows?.length > 0) {
-            rows.map((row) => {
-                const newRow = new Row();
-                for (let index = 0; index < Object.values(row).length; index++) {
-                    const element = Object.values(row)[index];
-                    const newCell = new Cell(element, newRow, newColumns[index]);
-                    newRow.addCell(newCell);
-                    if (Array.isArray(newColumns) && newColumns[index]) {
-                        newColumns[index].addCell(newCell);
-                    }
-                }
-
-                newRows.push(newRow);
-            });
-        }
-
-        this.#setRows(newRows);
-        this.#setColumns(newColumns);
+        this.setColumnsFromJSON(columns);
+        this.setRowsFromJSON(rows);
     }
 }
