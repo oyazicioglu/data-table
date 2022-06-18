@@ -15,11 +15,6 @@ export class Cell {
         private _visibility = true
     ) {
         this._uuid = uuid();
-        this.column = _column;
-        this.row = _row;
-        this.value = _value;
-        this.visibility = _visibility;
-        this.selectable = _selectable;
     }
 
     set visibility(visible: boolean) {

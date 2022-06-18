@@ -2,16 +2,13 @@ import { v4 as uuid } from 'uuid';
 import { Cell } from './cell';
 
 export type CellType = 'string' | 'number' | 'boolean' | 'date' | 'null';
+
 export class Column {
     private _uuid: string = undefined;
     private _name: string = undefined;
 
     constructor(private _cells: Cell[] = [], private _selectable = true, private _visibility = true, private _type: CellType = 'string') {
         this._uuid = uuid();
-        this.cells = _cells;
-        this.visibility = _visibility;
-        this.selectable = _selectable;
-        this.type = _type;
     }
 
     set visibility(visible: boolean) {

@@ -4,50 +4,52 @@ import { v4 as uuid } from 'uuid';
 import { Cell } from './cell';
 
 export class Table {
-    private uuid: string = undefined;
+    private _uuid: string = undefined;
 
     constructor(private _rows: Row[] = [], private _columns: Column[] = []) {
-        this.uuid = uuid();
-        this.rows = _rows;
-        this.columns = _columns;
+        this._uuid = uuid();
     }
 
     set rows(rows: Row[]) {
-        this.rows = rows;
-    }
-
-    rowsFromJSON(rows: Array<Object>) {
-        if (rows?.length <= 0) {
+        if (!rows && !Array.isArray(rows)) {
             return;
         }
 
-        rows.map((row) => {
-            const newRow = new Row();
-            const columns = this.columns;
-            for (let index = 0; index < Object.values(row).length; index++) {
-                const column = columns[index];
-                const element = Object.values(row)[index];
-                const newCell = new Cell(element, newRow, columns[index], !!column.selectable, !!column.visibility);
-                newRow.addCell(newCell);
-                if (Array.isArray(columns) && columns[index]) {
-                    columns[index].addCell(newCell);
-                }
-            }
-
-            this.addRow(newRow);
-        });
+        this._rows = rows;
     }
 
     set columns(columns: Column[]) {
+        if (!columns && !Array.isArray(columns)) {
+            return;
+        }
+
         this._columns = columns;
     }
 
     get rows() {
-        return this._rows.filter((row) => row.cells.filter((c) => c.visibility === true));
+        const visibleRows = this._rows.filter((row) => row.visibility === true);
+        return visibleRows.filter((row) => row.cells.filter((c) => c.visibility === true));
     }
 
     get columns() {
-        return this._columns.filter((column) => column.visibility === true);
+        const visibleColumns = this._columns.filter((column) => column.visibility === true);
+        return visibleColumns.filter((column) => column.cells.filter((cell) => cell.visibility === true));
+    }
+
+    get rowCount() {
+        return this._rows?.filter((row) => row.visibility === true).length;
+    }
+
+    get columnCount() {
+        return this._columns?.filter((column) => column.visibility === true).length;
+    }
+
+    get header() {
+        return this._rows.find((row) => row.type === RowType.HEADER);
+    }
+
+    get uuid() {
+        return this._uuid;
     }
 
     addRow(row: Row) {
@@ -98,6 +100,28 @@ export class Table {
         }
 
         this._columns.push(column);
+    }
+
+    rowsFromJSON(rows: Array<Object>) {
+        if (rows?.length <= 0) {
+            return;
+        }
+
+        rows.map((row) => {
+            const newRow = new Row();
+            const columns = this.columns;
+            for (let index = 0; index < Object.values(row).length; index++) {
+                const column = columns[index];
+                const element = Object.values(row)[index];
+                const newCell = new Cell(element, newRow, columns[index], !!column.selectable, !!column.visibility);
+                newRow.addCell(newCell);
+                if (Array.isArray(columns) && columns[index]) {
+                    columns[index].addCell(newCell);
+                }
+            }
+
+            this.addRow(newRow);
+        });
     }
 
     columnsFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>) {
@@ -153,14 +177,6 @@ export class Table {
         return column;
     }
 
-    get rowCount() {
-        return this._rows?.filter((row) => row.visibility === true).length;
-    }
-
-    get columnCount() {
-        return this._columns?.filter((column) => column.visibility === true).length;
-    }
-
     createEmptyRow(): Row {
         const newRow = new Row();
 
@@ -197,10 +213,6 @@ export class Table {
 
         this._columns.push(newColumn);
         return newColumn;
-    }
-
-    get header() {
-        return this._rows.find((row) => row.type === RowType.HEADER);
     }
 
     createFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>, rows: Array<Object>) {

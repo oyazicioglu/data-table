@@ -16,10 +16,6 @@ export class Row {
         private _type: RowType = RowType.ROW
     ) {
         this.uuid = uuid();
-        this.cells = _cells;
-        this.visibility = _visibility;
-        this.selectable = _selectable;
-        this.type = _type;
     }
 
     set visibility(visible) {
