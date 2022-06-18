@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cell = exports.Column = exports.Row = exports.Table = void 0;
-var table_1 = require("./table");
+var table_1 = require("./src/table");
 Object.defineProperty(exports, "Table", { enumerable: true, get: function () { return table_1.Table; } });
-var row_1 = require("./row");
+var row_1 = require("./src/row");
 Object.defineProperty(exports, "Row", { enumerable: true, get: function () { return row_1.Row; } });
-var column_1 = require("./column");
+var column_1 = require("./src/column");
 Object.defineProperty(exports, "Column", { enumerable: true, get: function () { return column_1.Column; } });
-var cell_1 = require("./cell");
+var cell_1 = require("./src/cell");
 Object.defineProperty(exports, "Cell", { enumerable: true, get: function () { return cell_1.Cell; } });
