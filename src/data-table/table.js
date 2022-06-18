@@ -39,9 +39,6 @@ export class Table {
             return;
         }
 
-        /** @type {Row[]} */
-        const newRows = [];
-
         rows.map((row) => {
             const newRow = new Row();
             const columns = this.getColumns(true);
@@ -54,10 +51,8 @@ export class Table {
                 }
             }
 
-            newRows.push(newRow);
+            this.addRow(newRow);
         });
-
-        this.setRows(newRows);
     }
 
     /**
@@ -157,9 +152,6 @@ export class Table {
             return;
         }
 
-        /** @type {Column[]} */
-        const newColumns = [];
-
         const headerRow = new Row();
         headerRow.setType('header');
         columns.map((column) => {
@@ -168,11 +160,10 @@ export class Table {
             const newCell = new Cell(column.name, headerRow, newColumn);
             newColumn.addCell(newCell);
             headerRow.addCell(newCell);
-            newColumns.push(newColumn);
+            this.addColumn(newColumn);
         });
 
         this.addRow(headerRow);
-        this.setColumns(newColumns);
     }
 
     /**
