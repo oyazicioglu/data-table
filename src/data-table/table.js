@@ -44,12 +44,13 @@ export class Table {
 
         rows.map((row) => {
             const newRow = new Row();
+            const columns = this.getColumns(true);
             for (let index = 0; index < Object.values(row).length; index++) {
                 const element = Object.values(row)[index];
-                const newCell = new Cell(element, newRow, newColumns[index]);
+                const newCell = new Cell(element, newRow, columns[index]);
                 newRow.addCell(newCell);
-                if (Array.isArray(newColumns) && newColumns[index]) {
-                    newColumns[index].addCell(newCell);
+                if (Array.isArray(columns) && columns[index]) {
+                    columns[index].addCell(newCell);
                 }
             }
 
@@ -159,20 +160,18 @@ export class Table {
         /** @type {Column[]} */
         const newColumns = [];
 
-        if (columns?.length > 0) {
-            const headerRow = new Row();
-            headerRow.setType('header');
-            columns.map((column) => {
-                const newColumn = new Column([], column.selectable, column.visible, column.type);
-                newColumn.setName(column.name);
-                const newCell = new Cell(column.name, headerRow, newColumn);
-                newColumn.addCell(newCell);
-                headerRow.addCell(newCell);
-                newColumns.push(newColumn);
-            });
-            newRows.push(headerRow);
-        }
+        const headerRow = new Row();
+        headerRow.setType('header');
+        columns.map((column) => {
+            const newColumn = new Column([], column.selectable, column.visible, column.type);
+            newColumn.setName(column.name);
+            const newCell = new Cell(column.name, headerRow, newColumn);
+            newColumn.addCell(newCell);
+            headerRow.addCell(newCell);
+            newColumns.push(newColumn);
+        });
 
+        this.addRow(headerRow);
         this.setColumns(newColumns);
     }
 

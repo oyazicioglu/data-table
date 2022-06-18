@@ -14,6 +14,7 @@ export class Row {
     /** @type {boolean} */
     #visible = true;
 
+    /** @type {RowType} */
     #type = 'row';
 
     /**
@@ -122,6 +123,10 @@ export class Row {
         return this.#cells[index];
     }
 
+    /**
+     *
+     * @param {RowType} type
+     */
     setType(type) {
         this.#type = type;
     }
