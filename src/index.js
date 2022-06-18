@@ -1,32 +1,4 @@
-import { Table } from './data-table/table.js';
-
-const columns = [
-    {
-        name: 'Name',
-        type: 'string',
-        visible: true,
-        selectable: true,
-    },
-    {
-        name: 'Surename',
-        type: 'string',
-        visible: true,
-        selectable: true,
-    },
-    {
-        name: 'Age',
-        type: 'string',
-        visible: true,
-        selectable: true,
-    },
-];
-
-const rows = [
-    ['A', 'B', 'C'],
-    ['D', 'E', 'F'],
-    ['F', 'G', 'H'],
-    ['I', 'J', 'K'],
-];
-
-const table = new Table();
-table.createFromJSON(columns, rows);
+export { Table } from './data-table/table.js';
+export { Row } from './data-table/row.js';
+export { Column } from './data-table/column.js';
+export { Cell } from './data-table/cell.js';
