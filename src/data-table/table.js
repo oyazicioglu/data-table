@@ -231,9 +231,7 @@ export class Table {
      * @param {array} json.rows
      * @param {ColumnDefs[]} json.columns
      */
-    createFromJSON(json) {
-        const { columns, rows } = json;
-
+    createFromJSON(columns, rows) {
         /** @type {Row[]} */
         const newRows = [];
 
