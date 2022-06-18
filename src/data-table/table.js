@@ -46,8 +46,12 @@ export class Table {
         }
     }
 
-    getColumns() {
-        return this.#columns.filter((column) => column.isVisible() === true);
+    getColumns(includeHidden = false) {
+        if (includeHidden) {
+            return this.#columns;
+        } else {
+            return this.#columns.filter((column) => column.isVisible() === true);
+        }
     }
 
     /**

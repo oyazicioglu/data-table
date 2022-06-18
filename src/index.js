@@ -5,14 +5,20 @@ const data = {
         {
             name: 'Name',
             type: 'string',
+            visible: true,
+            selectable: true,
         },
         {
-            name: 'Name',
+            name: 'Surename',
             type: 'string',
+            visible: true,
+            selectable: true,
         },
         {
-            name: 'Name',
+            name: 'Age',
             type: 'string',
+            visible: true,
+            selectable: true,
         },
     ],
     rows: [
@@ -26,6 +32,6 @@ const data = {
 const table = new Table();
 table.createFromJSON(data);
 
-table.getRows().forEach((row) => {
+table.getRows(true).forEach((row) => {
     console.table(row.toValueObject());
 });
