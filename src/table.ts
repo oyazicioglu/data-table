@@ -1,4 +1,4 @@
-import { Column } from './column';
+import { CellType, Column } from './column';
 import { Row, RowType } from './row';
 import { v4 as uuid } from 'uuid';
 import { Cell } from './cell';
@@ -6,11 +6,7 @@ import { Cell } from './cell';
 export class Table {
     private uuid: string = undefined;
 
-    /**
-     * @param {Row[]} rows
-     * @param {Column[]} columns
-     */
-    constructor(private _rows = [], private _columns = []) {
+    constructor(private _rows: Row[] = [], private _columns: Column[] = []) {
         this.uuid = uuid();
         this.rows = _rows;
         this.columns = _columns;
@@ -31,7 +27,7 @@ export class Table {
             for (let index = 0; index < Object.values(row).length; index++) {
                 const column = columns[index];
                 const element = Object.values(row)[index];
-                const newCell = new Cell(element, newRow, columns[index], !!column.isSelectable(), !!column.isVisible());
+                const newCell = new Cell(element, newRow, columns[index], !!column.selectable, !!column.visibility);
                 newRow.addCell(newCell);
                 if (Array.isArray(columns) && columns[index]) {
                     columns[index].addCell(newCell);
@@ -47,11 +43,11 @@ export class Table {
     }
 
     get rows() {
-        return this._rows.filter((row) => row.getCells().filter((c) => c.isVisible() === true));
+        return this._rows.filter((row) => row.cells.filter((c) => c.visibility === true));
     }
 
     get columns() {
-        return this._columns.filter((column) => column.isVisible() === true);
+        return this._columns.filter((column) => column.visibility === true);
     }
 
     addRow(row: Row) {
@@ -104,7 +100,7 @@ export class Table {
         this._columns.push(column);
     }
 
-    columnsFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: string; name?: string }>) {
+    columnsFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>) {
         if (columns?.length <= 0) {
             return;
         }
@@ -113,7 +109,7 @@ export class Table {
         headerRow.type = RowType.HEADER;
         columns.map((column) => {
             const newColumn = new Column([], column.selectable, column.visible, column.type);
-            newColumn.setName(column.name);
+            newColumn.name = column.name;
             const newCell = new Cell(column.name, headerRow, newColumn, column.selectable, column.visible);
             newColumn.addCell(newCell);
             headerRow.addCell(newCell);
@@ -158,11 +154,11 @@ export class Table {
     }
 
     get rowCount() {
-        return this._rows?.filter((row) => row.isVisible() === true).length;
+        return this._rows?.filter((row) => row.visibility === true).length;
     }
 
     get columnCount() {
-        return this._columns?.filter((column) => column.isVisible() === true).length;
+        return this._columns?.filter((column) => column.visibility === true).length;
     }
 
     createEmptyRow(): Row {
@@ -204,10 +200,10 @@ export class Table {
     }
 
     get header() {
-        return this._rows.find((row) => row.isHeader());
+        return this._rows.find((row) => row.type === RowType.HEADER);
     }
 
-    createFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: string; name?: string }>, rows: Array<Object>) {
+    createFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>, rows: Array<Object>) {
         this.columnsFromJSON(columns);
         this.rowsFromJSON(rows);
     }
