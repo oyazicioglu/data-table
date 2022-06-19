@@ -1,16 +1,12 @@
 import { v4 as uuid } from 'uuid';
-import { Cell } from './cell';
+import { ICell } from './ICell';
+import { IRow, RowType } from './IRow';
 
-export enum RowType {
-    ROW,
-    HEADER,
-}
-
-export class Row {
+export default class Row implements IRow {
     private uuid: string = undefined;
 
     constructor(
-        private _cells: Cell[] = [],
+        private _cells: ICell[] = [],
         private _visibility: boolean = true,
         private _selectable: boolean = true,
         private _type: RowType = RowType.ROW
@@ -46,7 +42,7 @@ export class Row {
         return this._selectable;
     }
 
-    set cells(cells: Cell[]) {
+    set cells(cells: ICell[]) {
         if (!cells) {
             return;
         }
@@ -61,7 +57,19 @@ export class Row {
         return this._cells;
     }
 
-    addCell(cell: Cell) {
+    set type(type: RowType) {
+        this._type = type;
+    }
+
+    get type() {
+        return this._type;
+    }
+
+    get isHeader() {
+        return this._type === RowType.HEADER;
+    }
+
+    addCell(cell: ICell) {
         if (!this._cells) {
             this._cells = [];
         }
@@ -86,19 +94,7 @@ export class Row {
         return this._cells[index];
     }
 
-    set type(type: RowType) {
-        this._type = type;
-    }
-
-    get type() {
-        return this._type;
-    }
-
-    get header() {
-        return this._type === RowType.HEADER;
-    }
-
-    toValueObject() {
+    toValueObject(): Object {
         const cells = this.cells?.map((cell) => {
             return cell.toValueObject();
         });

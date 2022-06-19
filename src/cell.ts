@@ -1,20 +1,23 @@
 import { v4 as uuid } from 'uuid';
-import { Column } from './column.js';
-import { Row } from './row.js';
+import { ICell } from './ICell';
+import { IColumn } from './IColumn';
+import { IRow } from './IRow';
 
-type ValueType = string | number | boolean | Date | null;
-
-export class Cell {
+export default class Cell implements ICell {
     private _uuid: string = undefined;
 
     constructor(
-        private _value: ValueType,
-        private _row: Row,
-        private _column: Column,
+        private _value: string,
+        private _row: IRow,
+        private _column: IColumn,
         private _selectable = true,
         private _visibility = true
     ) {
         this._uuid = uuid();
+    }
+
+    get visibility() {
+        return this._visibility;
     }
 
     set visibility(visible: boolean) {
@@ -25,15 +28,11 @@ export class Cell {
         this._selectable = selectable;
     }
 
-    get visibility() {
-        return this._visibility;
-    }
-
     get selectable() {
         return this._selectable;
     }
 
-    set value(value: ValueType) {
+    set value(value: string) {
         this._value = value;
     }
 
@@ -41,7 +40,7 @@ export class Cell {
         return this._value;
     }
 
-    set row(row: Row) {
+    set row(row: IRow) {
         this._row = row;
     }
 
@@ -53,7 +52,7 @@ export class Cell {
         this._column = column;
     }
 
-    get column(): Column {
+    get column(): IColumn {
         return this._column;
     }
 
@@ -61,7 +60,7 @@ export class Cell {
         return this._uuid;
     }
 
-    toValueObject() {
+    toValueObject(): Object {
         return {
             value: this.value,
             selectable: this.selectable,

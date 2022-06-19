@@ -1,14 +1,17 @@
 import { v4 as uuid } from 'uuid';
-import { Cell } from './cell';
+import { ICell } from './ICell';
+import { IColumn } from './IColumn';
 
-export type CellType = 'string' | 'number' | 'boolean' | 'date' | 'null';
-
-export class Column {
+export default class Column implements IColumn {
     private _uuid: string = undefined;
     private _name: string = undefined;
 
-    constructor(private _cells: Cell[] = [], private _selectable = true, private _visibility = true, private _type: CellType = 'string') {
+    constructor(private _cells: ICell[] = [], private _selectable = true, private _visibility = true, private _type: string = 'string') {
         this._uuid = uuid();
+        this.cells = _cells;
+        this.selectable = _selectable;
+        this.visibility = _visibility;
+        this.type = _type;
     }
 
     set visibility(visible: boolean) {
@@ -43,7 +46,7 @@ export class Column {
         return this._visibility;
     }
 
-    set cells(cells: Cell[]) {
+    set cells(cells: ICell[]) {
         if (!cells) {
             return;
         }
@@ -58,7 +61,27 @@ export class Column {
         return this._cells;
     }
 
-    addCell(cell: Cell) {
+    set name(name: string) {
+        this._name = name;
+    }
+
+    get name() {
+        return this._name;
+    }
+
+    set type(type: string) {
+        this._type = type;
+    }
+
+    get type() {
+        return this._type;
+    }
+
+    get uuid() {
+        return this._uuid;
+    }
+
+    addCell(cell: ICell) {
         if (!this._cells) {
             this._cells = [];
         }
@@ -83,27 +106,7 @@ export class Column {
         return this._cells[index];
     }
 
-    set name(name: string) {
-        this._name = name;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    set type(type: CellType) {
-        this._type = type;
-    }
-
-    get type() {
-        return this._type;
-    }
-
-    get uuid() {
-        return this._uuid;
-    }
-
-    toValueObject() {
+    toValueObject(): Object {
         const cells = this.cells?.map((cell) => {
             return cell.toValueObject();
         });

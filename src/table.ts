@@ -1,16 +1,19 @@
-import { CellType, Column } from './column';
-import { Row, RowType } from './row';
 import { v4 as uuid } from 'uuid';
-import { Cell } from './cell';
+import Cell from './Cell';
+import Column from './Column';
+import { IColumn } from './IColumn';
+import { IRow, RowType } from './IRow';
+import { ITable } from './ITable';
+import Row from './Row';
 
-export class Table {
+export default class Table implements ITable {
     private _uuid: string = undefined;
 
-    constructor(private _rows: Row[] = [], private _columns: Column[] = []) {
+    constructor(private _rows: IRow[] = [], private _columns: IColumn[] = []) {
         this._uuid = uuid();
     }
 
-    set rows(rows: Row[]) {
+    set rows(rows: IRow[]) {
         if (!rows && !Array.isArray(rows)) {
             return;
         }
@@ -18,7 +21,7 @@ export class Table {
         this._rows = rows;
     }
 
-    set columns(columns: Column[]) {
+    set columns(columns: IColumn[]) {
         if (!columns && !Array.isArray(columns)) {
             return;
         }
@@ -52,7 +55,7 @@ export class Table {
         return this._uuid;
     }
 
-    addRow(row: Row) {
+    addRow(row: IRow) {
         if (!this._rows) {
             this._rows = [];
         }
@@ -60,7 +63,7 @@ export class Table {
         this._rows.push(row);
     }
 
-    removeRow(row: Row) {
+    removeRow(row: IRow) {
         if (!this._rows) {
             return;
         }
@@ -80,7 +83,7 @@ export class Table {
         }
     }
 
-    changeRow(row: Row): Row {
+    changeRow(row: IRow): IRow {
         if (!this._rows) {
             return;
         }
@@ -94,7 +97,7 @@ export class Table {
         return row;
     }
 
-    addColumn(column: Column) {
+    addColumn(column: IColumn) {
         if (!this._columns) {
             this._columns = [];
         }
@@ -124,7 +127,7 @@ export class Table {
         });
     }
 
-    columnsFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>) {
+    columnsFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: string; name?: string }>) {
         if (columns?.length <= 0) {
             return;
         }
@@ -132,7 +135,7 @@ export class Table {
         const headerRow = new Row();
         headerRow.type = RowType.HEADER;
         columns.map((column) => {
-            const newColumn = new Column([], column.selectable, column.visible, column.type);
+            const newColumn = new Column([], column.selectable, column.visible);
             newColumn.name = column.name;
             const newCell = new Cell(column.name, headerRow, newColumn, column.selectable, column.visible);
             newColumn.addCell(newCell);
@@ -143,7 +146,7 @@ export class Table {
         this.addRow(headerRow);
     }
 
-    removeColumn(column: Column) {
+    removeColumn(column: IColumn) {
         if (!this._columns) {
             return;
         }
@@ -163,7 +166,7 @@ export class Table {
         }
     }
 
-    changeColumn(column: Column): Column {
+    changeColumn(column: IColumn): IColumn {
         if (!this._columns) {
             return;
         }
@@ -177,7 +180,7 @@ export class Table {
         return column;
     }
 
-    createEmptyRow(): Row {
+    createEmptyRow(): IRow {
         const newRow = new Row();
 
         if (!this._columns) {
@@ -196,7 +199,7 @@ export class Table {
         return newRow;
     }
 
-    createEmptyColumn(): Column {
+    createEmptyColumn(): IColumn {
         const newColumn = new Column();
 
         if (!this._rows) {
@@ -215,7 +218,7 @@ export class Table {
         return newColumn;
     }
 
-    createFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: CellType; name?: string }>, rows: Array<Object>) {
+    createFromJSON(columns: Array<{ selectable?: boolean; visible?: boolean; type: string; name?: string }>, rows: Array<Object>) {
         this.columnsFromJSON(columns);
         this.rowsFromJSON(rows);
     }
