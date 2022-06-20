@@ -92,4 +92,14 @@ export default class Cell {
             column: this.column,
         };
     }
+
+    /**
+     * @param {string} value
+     * @returns {boolean}
+     */
+    search(value) {
+        const lowecaseValue = this.value.toLowerCase();
+        const lowercaseSearchValue = value.toLowerCase();
+        return lowecaseValue.includes(lowercaseSearchValue);
+    }
 }

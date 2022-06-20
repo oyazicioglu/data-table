@@ -148,4 +148,12 @@ export default class Row {
             type: this.type,
         };
     }
+
+    search(value) {
+        if (!this.#cells || this.isHeader) {
+            return false;
+        }
+
+        return this.#cells.some((cell) => cell.search(value));
+    }
 }

@@ -10,6 +10,9 @@ export default class Table {
     /** @type {Column[]} */
     #columns;
 
+    /** @type {Row[]} */
+    #result = [];
+
     /**
      * @param {Row[]} _rows
      * @param {Column[]} _columns
@@ -259,5 +262,21 @@ export default class Table {
     createFromJSON(columns, rows) {
         this.columnsFromJSON(columns);
         this.rowsFromJSON(rows);
+    }
+
+    /**
+     *
+     * @param {string} value
+     * @returns {Row[]}
+     */
+    search(value) {
+        if (!value || !this.rows) {
+            return;
+        }
+
+        const rows = this.#rows.filter((row) => {
+            return row.search(value);
+        });
+        return rows;
     }
 }
