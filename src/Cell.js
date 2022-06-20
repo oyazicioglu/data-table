@@ -98,8 +98,12 @@ export default class Cell {
      * @returns {boolean}
      */
     search(value) {
-        const lowecaseValue = this.value.toLowerCase();
-        const lowercaseSearchValue = value.toLowerCase();
+        if (!value || !this.value) {
+            return false;
+        }
+
+        const lowecaseValue = this.value.toString().toLowerCase();
+        const lowercaseSearchValue = value.toString().toLowerCase();
         return lowecaseValue.includes(lowercaseSearchValue);
     }
 }

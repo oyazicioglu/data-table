@@ -150,10 +150,10 @@ export default class Row {
     }
 
     search(value) {
-        if (!this.#cells || this.isHeader) {
+        if (!this.#cells) {
             return false;
         }
 
-        return this.#cells.some((cell) => cell.search(value));
+        return this.cells.some((cell) => cell.search(value));
     }
 }

@@ -146,6 +146,9 @@ export default class Table {
             const columns = this.allColumns;
             for (let index = 0; index < Object.values(row).length; index++) {
                 const column = columns[index];
+                if (!column) {
+                    this.addColumn(new Column([]));
+                }
                 const element = Object.values(row)[index];
                 const newCell = new Cell(element, newRow, columns[index], !!column.selectable, !!column.visibility);
                 newRow.addCell(newCell);
@@ -269,12 +272,12 @@ export default class Table {
      * @param {string} value
      * @returns {Row[]}
      */
-    search(value) {
+    globalSearch(value) {
         if (!value || !this.rows) {
             return;
         }
 
-        const rows = this.#rows.filter((row) => {
+        const rows = this.rows.filter((row) => {
             return row.search(value);
         });
         return rows;
