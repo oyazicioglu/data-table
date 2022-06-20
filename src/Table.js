@@ -134,7 +134,6 @@ export default class Table {
 
     /** @param {Object[]} rows  */
     rowsFromJSON(rows) {
-        console.log(rows);
         if (rows?.length <= 0) {
             return;
         }
@@ -158,7 +157,6 @@ export default class Table {
 
     /** @param {Object[]} columns  */
     columnsFromJSON(columns) {
-        console.log(columns);
         if (columns?.length <= 0) {
             return;
         }
