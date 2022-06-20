@@ -5,7 +5,9 @@ import Row from './Row.js';
 
 export default class Table {
     #uuid = undefined;
+    /** @type {Row[]} */
     #rows;
+    /** @type {Column[]} */
     #columns;
 
     /**
@@ -38,7 +40,7 @@ export default class Table {
 
     /** @returns {Row[]} */
     get rows() {
-        const visibleRows = this.#rows.filter((row) => row.visibility === true);
+        const visibleRows = this.#rows.filter((row) => row.visibility === true && row.type !== 'HEADER');
         return visibleRows.filter((row) => row.cells.filter((c) => c.visibility === true));
     }
 
@@ -46,6 +48,16 @@ export default class Table {
     get columns() {
         const visibleColumns = this.#columns.filter((column) => column.visibility === true);
         return visibleColumns.filter((column) => column.cells.filter((cell) => cell.visibility === true));
+    }
+
+    /** @returns {Row[]} */
+    get allRows() {
+        return this.#rows;
+    }
+
+    /** @returns {Column[]} */
+    get allColumns() {
+        return this.#columns;
     }
 
     get rowCount() {
@@ -58,7 +70,7 @@ export default class Table {
 
     /** @returns {Row} */
     get header() {
-        return this.#rows.find((row) => row.type === RowType.HEADER);
+        return this.#rows.find((row) => row.type === 'HEADER');
     }
 
     get uuid() {
@@ -122,13 +134,14 @@ export default class Table {
 
     /** @param {Object[]} rows  */
     rowsFromJSON(rows) {
+        console.log(rows);
         if (rows?.length <= 0) {
             return;
         }
 
         rows.map((row) => {
             const newRow = new Row();
-            const columns = this.columns;
+            const columns = this.allColumns;
             for (let index = 0; index < Object.values(row).length; index++) {
                 const column = columns[index];
                 const element = Object.values(row)[index];
@@ -145,12 +158,13 @@ export default class Table {
 
     /** @param {Object[]} columns  */
     columnsFromJSON(columns) {
+        console.log(columns);
         if (columns?.length <= 0) {
             return;
         }
 
         const headerRow = new Row();
-        headerRow.type = RowType.HEADER;
+        headerRow.type = 'HEADER';
         columns.map((column) => {
             const newColumn = new Column([], column.selectable, column.visible);
             newColumn.name = column.name;

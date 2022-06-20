@@ -3,7 +3,8 @@ import Cell from './Cell.js';
 
 export default class Row {
     #uuid = undefined;
-    #cells;
+    /** @type {Cell[]} */
+    #cells = [];
     #visibility = true;
     #selectable = true;
     #type = 'row';
@@ -49,6 +50,10 @@ export default class Row {
     set selectable(selectable) {
         this.#selectable = selectable;
 
+        if (!Array.isArray(this.#cells)) {
+            this.cells = [];
+        }
+
         this.#cells.forEach((cell) => {
             cell.selectable = selectable;
         });
@@ -68,6 +73,10 @@ export default class Row {
 
     /** @returns {Cell[]} */
     get cells() {
+        return this.#cells.filter((cell) => cell.visibility === true);
+    }
+
+    get allCells() {
         return this.#cells;
     }
 

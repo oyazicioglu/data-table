@@ -7,6 +7,7 @@ export default class Column {
     #selectable = true;
     #visibility = true;
     #type = 'string';
+    /** @type {Cell[]} */
     #cells = [];
 
     /**
@@ -74,6 +75,10 @@ export default class Column {
 
     /** @returns {Cell[]} */
     get cells() {
+        return this.#cells.forEach((cell) => cell.visibility === true);
+    }
+
+    get allCells() {
         return this.#cells;
     }
 
