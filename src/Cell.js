@@ -94,7 +94,7 @@ export default class Cell {
     }
 
     /**
-     * @param {string} value
+     * @param {string | string[]} value
      * @returns {boolean}
      */
     search(value) {
@@ -103,7 +103,15 @@ export default class Cell {
         }
 
         const lowecaseValue = this.value.toString().toLowerCase();
-        const lowercaseSearchValue = value.toString().toLowerCase();
-        return lowecaseValue.includes(lowercaseSearchValue);
+
+        if (Array.isArray(value)) {
+            return value.some((v) => {
+                const lowercaseSearchValue = v.toString().toLowerCase();
+                return lowecaseValue.includes(lowercaseSearchValue);
+            });
+        } else {
+            const lowercaseSearchValue = value.toString().toLowerCase();
+            return lowecaseValue.includes(lowercaseSearchValue);
+        }
     }
 }
