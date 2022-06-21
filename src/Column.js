@@ -155,4 +155,18 @@ export default class Column {
             name: this.name,
         };
     }
+
+    search(value) {
+        if (!this.#cells) {
+            return false;
+        }
+
+        return this.cells.foreach((cell) => {
+            const found = cell.search(value);
+            if (found) {
+                const row = cell.row;
+                return cell.row;
+            }
+        });
+    }
 }

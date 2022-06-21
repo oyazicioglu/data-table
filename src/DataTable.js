@@ -1,14 +1,17 @@
 import Cell from './Cell.js';
 import Column from './Column.js';
+import { Subject } from './lib/Subject.js';
 import { uuid } from './lib/uuid.js';
 import Row from './Row.js';
 
-export default class Table {
+export default class DataTable {
     #uuid = undefined;
     /** @type {Row[]} */
     #rows;
     /** @type {Column[]} */
     #columns;
+
+    #eventSubject = new Subject();
 
     /** @type {Row[]} */
     #result = [];
@@ -21,6 +24,10 @@ export default class Table {
         this.#uuid = uuid();
         this.rows = _rows;
         this.columns = _columns;
+
+        this.#emitOnHeaderChanged(this.header);
+        this.#emitOnColumnsChanged(this.columns);
+        this.#emitOnRowsChanged(this.rows);
     }
 
     /** @param {Row[]} */
@@ -49,8 +56,8 @@ export default class Table {
 
     /** @returns {Column[]} */
     get columns() {
-        const visibleColumns = this.#columns.filter((column) => column.visibility === true);
-        return visibleColumns.filter((column) => column.cells.filter((cell) => cell.visibility === true));
+        return this.#columns.filter((column) => column.visibility === true);
+        // return visibleColumns.filter((column) => column.cells.filter((cell) => cell.visibility === true));
     }
 
     /** @returns {Row[]} */
@@ -73,7 +80,7 @@ export default class Table {
 
     /** @returns {Row} */
     get header() {
-        return this.#rows.find((row) => row.type === 'HEADER');
+        return this.#rows.find((row) => row.isHeader && row.cells.filter((c) => c.visibility === true));
     }
 
     get uuid() {
@@ -189,6 +196,8 @@ export default class Table {
 
         const filteredColumns = this.#columns.filter((r) => r !== column);
         this.#columns = filteredColumns;
+
+        this.#emitOnColumnsChanged(this.columns);
     }
 
     /** @param {number} index  */
@@ -201,6 +210,8 @@ export default class Table {
         if (foundColumn) {
             this.#columns.splice(index, 1);
         }
+
+        this.#emitOnColumnsChanged(this.columns);
     }
 
     /** @param {Column} column  */
@@ -215,7 +226,8 @@ export default class Table {
         }
 
         this.#columns[foundColumn] = column;
-        return column;
+
+        this.#emitOnColumnsChanged(this.columns);
     }
 
     /** @returns {Row} */
@@ -255,7 +267,25 @@ export default class Table {
         }
 
         this.#columns.push(newColumn);
+        this.#emitOnColumnsChanged(this.columns);
         return newColumn;
+    }
+
+    /** @param {Column} column  */
+    hideColumn(column) {
+        if (!column) {
+            return;
+        }
+
+        const foundColumnIndex = this.#columns.findIndex((c) => c === column);
+
+        if (!foundColumnIndex) {
+            return;
+        }
+
+        this.#columns[foundColumnIndex].visibility = false;
+        this.#emitOnHeaderChanged(this.header);
+        this.#emitOnUpdate(this.rows);
     }
 
     /**
@@ -269,7 +299,7 @@ export default class Table {
 
     /**
      *
-     * @param {string} value
+     * @param {string | string[]} value
      * @returns {Row[]}
      */
     globalSearch(value) {
@@ -281,5 +311,49 @@ export default class Table {
             return row.search(value);
         });
         return rows;
+    }
+
+    /**
+     * @param {Column[]} columns
+     * @param {string | number} value
+     */
+    searchInColumns(columns, value) {
+        if (!columns || !this.columns || !Array.isArray(columns) || columns.length <= 0) {
+            return;
+        }
+
+        return this.columns.some((column) => column.search(value));
+    }
+
+    onUpdate(callback) {
+        this.#eventSubject.subscribe('onColumnsChanged', callback);
+    }
+
+    #emitOnUpdate(updateResult) {
+        this.#eventSubject.notify('onColumnsChanged', updateResult);
+    }
+
+    onHeaderChanged(callback) {
+        this.#eventSubject.subscribe('onHeaderChanged', callback);
+    }
+
+    #emitOnHeaderChanged(header) {
+        this.#eventSubject.notify('onHeaderChanged', header);
+    }
+
+    onRowsChanged(callback) {
+        this.#eventSubject.subscribe('onRowsChanged', callback);
+    }
+
+    #emitOnRowsChanged(rows) {
+        this.#eventSubject.notify('onRowsChanged', rows);
+    }
+
+    onColumnsChanged(callback) {
+        this.#eventSubject.subscribe('onColumnsChanged', callback);
+    }
+
+    #emitOnColumnsChanged(columns) {
+        this.#eventSubject.notify('onColumnsChanged', columns);
     }
 }
