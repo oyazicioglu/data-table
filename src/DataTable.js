@@ -318,7 +318,7 @@ export default class DataTable {
      */
     globalSearch(value) {
         if (!value || !this.rows) {
-            return;
+            [];
         }
 
         const rows = this.rows.filter((row) => {
