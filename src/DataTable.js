@@ -50,14 +50,29 @@ export default class DataTable {
 
     /** @returns {Row[]} */
     get rows() {
-        const visibleRows = this.#rows.filter((row) => row.visibility === true && row.type !== 'HEADER');
-        return visibleRows.filter((row) => row.cells.filter((c) => c.visibility === true));
+        if (!this.#rows) {
+            return [];
+        }
+
+        const visibleRows = this.#rows?.filter((row) => row.visibility === true && row.type !== 'HEADER');
+        if (!visibleRows) {
+            return [];
+        }
+
+        return visibleRows?.filter((row) => row.cells.filter((c) => c.visibility === true));
     }
 
     /** @returns {Column[]} */
     get columns() {
-        return this.#columns.filter((column) => column.visibility === true);
-        // return visibleColumns.filter((column) => column.cells.filter((cell) => cell.visibility === true));
+        if (!this.#columns) {
+            return [];
+        }
+
+        const visibleColumns = this.#columns?.filter((column) => column.visibility === true);
+        if (!visibleColumns) {
+            return [];
+        }
+        return visibleColumns?.filter((column) => column.cells?.filter((cell) => cell.visibility === true));
     }
 
     /** @returns {Row[]} */
@@ -278,7 +293,6 @@ export default class DataTable {
         }
 
         const foundColumnIndex = this.#columns.findIndex((c) => c === column);
-
         if (!foundColumnIndex) {
             return;
         }
@@ -310,7 +324,8 @@ export default class DataTable {
         const rows = this.rows.filter((row) => {
             return row.search(value);
         });
-        return rows;
+
+        this.#emitOnRowsChanged(rows);
     }
 
     /**
