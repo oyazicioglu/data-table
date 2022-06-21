@@ -1,5 +1,5 @@
-import { v4 as uuid } from 'uuid';
 import Cell from './Cell.js';
+import { uuid } from './lib/uuid.js';
 
 export default class Row {
     #uuid = undefined;

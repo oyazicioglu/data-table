@@ -1,6 +1,6 @@
-import { v4 as uuid } from 'uuid';
 import Cell from './Cell.js';
 import Column from './Column.js';
+import { uuid } from './lib/uuid.js';
 import Row from './Row.js';
 
 export default class Table {
