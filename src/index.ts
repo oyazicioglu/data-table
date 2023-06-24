@@ -27,7 +27,6 @@ import {
     SorterCreator,
     StringSorter,
 } from './datatable/sorters';
-import { ISubject, Subject, Subscriber } from './event-system';
 
 export {
     IDataTable,
@@ -62,7 +61,4 @@ export {
     Sortable,
     SortDirection,
     UUID,
-    Subject,
-    Subscriber,
-    ISubject,
 };

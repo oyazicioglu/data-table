@@ -1,4 +1,4 @@
-import { ISubject, Subject } from '../../event-system';
+import { ISubject, Subject } from 'qei-event-system';
 import { onSearchCriteriaChanged, onFilteredRowsChanged } from '../core';
 import type { IRow } from '../row';
 import { Sortable, SorterCreator } from '../sorters';

@@ -9,12 +9,10 @@
         "lint": "eslint",
         "lint:fix": "eslint --fix",
         "test": "",
-        "prepare": "npm run build",
         "prepublishOnly": "npm test && npm run lint",
         "preversion": "npm run lint",
         "version": "git add -A src",
-        "postversion": "git push && git push --tags",
-        "preinstall": "npm run build"
+        "postversion": "git push && git push --tags"
     },
     "author": "Ömer YAZICIOĞLU",
     "license": "MIT",
@@ -34,5 +32,8 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/oyazicioglu/data-table.git"
+    },
+    "dependencies": {
+        "qei-event-system": "^0.1.1"
     }
 }

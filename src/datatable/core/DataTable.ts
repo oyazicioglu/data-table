@@ -1,4 +1,4 @@
-import { Subject } from '../../event-system';
+import { Subject } from 'qei-event-system';
 import type { IColumn } from '../column';
 import type { IRow } from '../row';
 import { Row } from '../row';
@@ -14,8 +14,6 @@ import {
 } from './';
 
 export class DataTable implements IDataTable {
-    onRowsChanged = new Subject<IRow[]>();
-
     private _options: DataTableOptions;
     public get options(): DataTableOptions {
         return this._options;
@@ -30,7 +28,6 @@ export class DataTable implements IDataTable {
     }
     public set rows(v: IRow[]) {
         this._rows = v;
-        this.onRowsChanged.Notify(v);
     }
 
     private _columns: IColumn[] = [];

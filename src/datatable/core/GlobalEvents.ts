@@ -1,4 +1,4 @@
-import { ISubject, Subject } from '../../event-system';
+import { ISubject, Subject } from 'qei-event-system';
 import type { IRow } from '../row';
 import type { Sortable, SortDirection } from '../sorters';
 
