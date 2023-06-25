@@ -1,4 +1,4 @@
-import { IColumn } from '../column';
+import { IColumn } from '../../index.js';
 
 export interface IRow {
     id: string;

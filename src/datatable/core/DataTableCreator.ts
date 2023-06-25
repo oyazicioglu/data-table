@@ -1,5 +1,5 @@
-import { DataTable } from './';
-import type { IDataTable, DataTableOptions } from './';
+import { DataTable } from './DataTable.js';
+import { DataTableOptions, IDataTable } from './IDataTable.js';
 
 export class DataTableCreator {
     static emptyTable(): IDataTable {

@@ -1,6 +1,5 @@
 import { ISubject } from 'qei-event-system';
-import type { IRow } from '../row';
-import type { Sortable } from '../sorters';
+import { IRow, Sortable } from '../../index.js';
 
 export type ColumnOptions = {
     title?: string;

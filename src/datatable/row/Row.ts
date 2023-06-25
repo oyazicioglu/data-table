@@ -1,6 +1,6 @@
+import { IColumn } from '../../index.js';
 import { UUID } from '../UUID.js';
-import { IColumn } from '../column';
-import { IRow, RowOptions } from './';
+import { IRow, RowOptions } from './IRow.js';
 
 export class Row implements IRow {
     private _id: string;

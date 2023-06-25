@@ -1,5 +1,11 @@
-import { ColumnType } from '../column';
-import { BooleanSorter, DateSorter, NumberSorter, Sortable, StringSorter } from '.';
+import {
+    BooleanSorter,
+    ColumnType,
+    DateSorter,
+    NumberSorter,
+    Sortable,
+    StringSorter,
+} from '../../index.js';
 
 export class SorterCreator {
     static fromType(type: ColumnType): Sortable {

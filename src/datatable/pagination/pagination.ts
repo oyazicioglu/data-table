@@ -1,4 +1,4 @@
-import type { IDataTable } from '../core';
+import { IDataTable } from '../../index.js';
 
 export interface IPagination {
     pageSizes: number[];

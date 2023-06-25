@@ -1,9 +1,9 @@
-// Reexport your entry components here
 import { UUID } from './datatable/UUID.js';
-import { Column, ColumnOptions, ColumnType, IColumn } from './datatable/column';
+import { Column } from './datatable/column/Column.js';
+import { ColumnOptions, IColumn, ColumnType } from './datatable/column/IColumn.js';
+import { DataTable } from './datatable/core/DataTable.js';
+import { DataTableCreator } from './datatable/core/DataTableCreator.js';
 import {
-    DataTable,
-    DataTableCreator,
     onFilterCriteriaChanged,
     onFilteredRowsChanged,
     onPageChanged,
@@ -14,19 +14,19 @@ import {
     onSearchCriteriaChanged,
     onTotalPagesChanged,
     onTotalRecordChanged,
-} from './datatable/core';
-import { IDataTable } from './datatable/core';
-import { IPagination, PageSize, Pagination, paginationConfig } from './datatable/pagination';
-import { IRow, Row, RowOptions } from './datatable/row';
-import {
-    BooleanSorter,
-    DateSorter,
-    NumberSorter,
-    SortDirection,
-    Sortable,
-    SorterCreator,
-    StringSorter,
-} from './datatable/sorters';
+} from './datatable/core/GlobalEvents.js';
+import { IDataTable } from './datatable/core/IDataTable.js';
+import { paginationConfig } from './datatable/pagination/pagination.config.js';
+import { Pagination, IPagination } from './datatable/pagination/pagination.js';
+import { PageSize } from './datatable/pagination/pagination.size.js';
+import { IRow, RowOptions } from './datatable/row/IRow.js';
+import { Row } from './datatable/row/Row.js';
+import { BooleanSorter } from './datatable/sorters/BooleanSorter.js';
+import { DateSorter } from './datatable/sorters/DateSorter.js';
+import { NumberSorter } from './datatable/sorters/NumberSorter.js';
+import { Sortable, SortDirection } from './datatable/sorters/Sortable.js';
+import { SorterCreator } from './datatable/sorters/SorterCreator.js';
+import { StringSorter } from './datatable/sorters/StringSorter.js';
 
 export {
     IDataTable,

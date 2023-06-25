@@ -1,6 +1,5 @@
 import { ISubject, Subject } from 'qei-event-system';
-import type { IRow } from '../row';
-import type { Sortable, SortDirection } from '../sorters';
+import { IRow, SortDirection, Sortable } from '../../index.js';
 
 export const onFilteredRowsChanged: ISubject<IRow[]> = new Subject();
 export const onRowsSorted: ISubject<{ sorter: Sortable; index: number; direction: SortDirection }> =

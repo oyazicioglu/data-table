@@ -1,5 +1,5 @@
-import { IRow } from '../row';
-import { Sortable, SortDirection } from '.';
+import { IRow } from '../../index.js';
+import { Sortable, SortDirection } from './Sortable.js';
 
 export class StringSorter implements Sortable {
     sort(direction: SortDirection, columnIndex: number, rows: IRow[]): IRow[] {

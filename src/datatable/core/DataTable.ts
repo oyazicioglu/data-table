@@ -1,17 +1,12 @@
-import { Subject } from 'qei-event-system';
-import type { IColumn } from '../column';
-import type { IRow } from '../row';
-import { Row } from '../row';
-import type { SortDirection, Sortable } from '../sorters';
+import { IRow, IColumn, Row, SortDirection, Sortable } from '../../index.js';
 import {
     onFilteredRowsChanged,
     onRowsSorted,
     onFilterCriteriaChanged,
     onSearchCriteriaChanged,
     onReset,
-    IDataTable,
-    DataTableOptions,
-} from './';
+} from './GlobalEvents.js';
+import { IDataTable, DataTableOptions } from './IDataTable.js';
 
 export class DataTable implements IDataTable {
     private _options: DataTableOptions;

@@ -1,4 +1,4 @@
-import type { IRow } from '../row';
+import { IRow } from '../../index.js';
 
 export enum SortDirection {
     Asc,

@@ -1,7 +1,4 @@
-import type { IColumn } from '../column';
-import type { IPagination } from '../pagination';
-import type { IRow } from '../row';
-import type { SortDirection, Sortable } from '../sorters';
+import { IRow, IColumn, IPagination, SortDirection, Sortable } from '../../index.js';
 
 export type DataTableOptions = {
     hasGlobalSearch?: boolean;

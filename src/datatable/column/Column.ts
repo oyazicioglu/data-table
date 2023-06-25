@@ -1,8 +1,12 @@
 import { ISubject, Subject } from 'qei-event-system';
-import { onSearchCriteriaChanged, onFilteredRowsChanged } from '../core';
-import type { IRow } from '../row';
-import { Sortable, SorterCreator } from '../sorters';
-import type { ColumnOptions, IColumn } from './';
+import {
+    IRow,
+    Sortable,
+    SorterCreator,
+    onFilteredRowsChanged,
+    onSearchCriteriaChanged,
+} from '../../index.js';
+import { ColumnOptions, IColumn } from './IColumn.js';
 
 export class Column implements IColumn {
     private _sorter: Sortable | undefined;
