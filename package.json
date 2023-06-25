@@ -1,6 +1,6 @@
 {
     "name": "qei-datatable",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Data Table Logic",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -13,7 +13,8 @@
         "prepublishOnly": "npm test && npm run lint",
         "preversion": "npm run lint",
         "version": "git add -A src",
-        "postversion": "git push && git push --tags"
+        "postversion": "git push && git push --tags",
+        "prepare": "npm run build"
     },
     "author": "Ömer YAZICIOĞLU",
     "license": "MIT",
