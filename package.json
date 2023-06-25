@@ -33,6 +33,6 @@
         "url": "https://github.com/oyazicioglu/data-table.git"
     },
     "dependencies": {
-        "qei-event-system": "^0.1.1"
+        "qei-event-system": "^0.1.3"
     }
 }

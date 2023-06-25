@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   qei-event-system:
-    specifier: ^0.1.1
-    version: 0.1.1
+    specifier: ^0.1.3
+    version: 0.1.3
 
 devDependencies:
   '@typescript-eslint/eslint-plugin':
@@ -816,8 +816,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /qei-event-system@0.1.1:
-    resolution: {integrity: sha512-cFY8bN0l0NeFyuvohYyh3Y6C7c7nFSwVovGdosot6rliVIcuhLIXKr6ssayhzcWkzIDPSAdn+KmjRSaO6mOYpA==}
+  /qei-event-system@0.1.3:
+    resolution: {integrity: sha512-R0W9pa/jLLPsMQwWYwy2V6aFHf+yCf+BK3OWqJWnnJeiTqXPAkjoSWW/MuTcRj4Sl0hsOOTngD4/Aag+XR2tpg==}
     dev: false
 
   /queue-microtask@1.2.3:
