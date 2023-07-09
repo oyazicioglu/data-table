@@ -19,11 +19,11 @@ export class Row implements IRow {
         this._values = v;
     }
 
-    private _options: RowOptions;
-    public get options(): RowOptions {
+    private _options: RowOptions | undefined;
+    public get options(): RowOptions | undefined {
         return this._options;
     }
-    public set options(v: RowOptions) {
+    public set options(v: RowOptions | undefined) {
         this._options = v;
     }
 
