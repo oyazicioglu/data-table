@@ -1,6 +1,6 @@
 {
     "name": "qei-datatable",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "description": "Data Table Logic",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",

@@ -125,15 +125,19 @@ export class DataTable implements IDataTable {
         );
     }
 
-    private fromJson(data: Object[]) {
+    private fromJson(jsonData: Object[]) {
         let rows: IRow[] = [];
-        data.forEach((datum, index) => {
+        jsonData.forEach((datum) => {
             let values: string[] = [];
+            let id = '';
             for (const [key, value] of Object.entries(datum)) {
                 values.push(value);
+                if (key === 'id') {
+                    id = value;
+                }
             }
 
-            const newRow = new Row(values, {
+            const newRow = new Row(id, values, {
                 selectable: true,
                 visible: true,
             });

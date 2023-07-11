@@ -27,8 +27,8 @@ export class Row implements IRow {
         this._options = v;
     }
 
-    constructor(values: string[], options: RowOptions | undefined = undefined) {
-        this._id = UUID.create();
+    constructor(id: string, values: string[], options: RowOptions | undefined = undefined) {
+        this._id = id;
         this._options = options;
         this._values = values;
     }
