@@ -3,6 +3,8 @@ import { UUID } from '../UUID.js';
 import { IRow, RowOptions } from './IRow.js';
 
 export class Row implements IRow {
+    [key: string]: any;
+
     private _id: string;
     public get id(): string {
         return this._id;

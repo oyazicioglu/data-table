@@ -141,6 +141,11 @@ export class DataTable implements IDataTable {
                 selectable: true,
                 visible: true,
             });
+
+            for (const [key, value] of Object.entries(datum)) {
+                newRow[key] = value;
+            }
+
             rows.push(newRow);
         });
 
