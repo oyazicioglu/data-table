@@ -21,6 +21,7 @@ export enum ColumnType {
 }
 
 export interface IColumn {
+    [key: string]: any;
     options: ColumnOptions;
     sorter?: Sortable;
     index: number;

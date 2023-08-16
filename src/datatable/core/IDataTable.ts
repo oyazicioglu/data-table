@@ -6,6 +6,7 @@ export type DataTableOptions = {
 };
 
 export interface IDataTable {
+    [key: string]: any;
     rows: IRow[];
     columns: IColumn[];
     filteredRows: IRow[];

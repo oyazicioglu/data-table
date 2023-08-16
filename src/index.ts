@@ -60,5 +60,4 @@ export {
     StringSorter,
     Sortable,
     SortDirection,
-    UUID,
 };
