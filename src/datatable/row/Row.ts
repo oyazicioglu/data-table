@@ -5,14 +5,6 @@ import { IRow, RowOptions } from './IRow.js';
 export class Row implements IRow {
     [key: string]: any;
 
-    private _id: string;
-    public get id(): string {
-        return this._id;
-    }
-    public set id(v: string) {
-        this._id = v;
-    }
-
     private _values: string[];
     public get values(): string[] {
         return this._values;
@@ -29,8 +21,7 @@ export class Row implements IRow {
         this._options = v;
     }
 
-    constructor(id: string, values: string[], options: RowOptions | undefined = undefined) {
-        this._id = id;
+    constructor(values: string[] = [], options: RowOptions | undefined = undefined) {
         this._options = options;
         this._values = values;
     }

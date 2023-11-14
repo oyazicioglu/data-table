@@ -1,14 +1,26 @@
-import { DataTable } from './DataTable.js';
-import { DataTableOptions, IDataTable } from './IDataTable.js';
+import { DataTable } from "./DataTable.js";
+import { DataTableOptions, IDataTable } from "./IDataTable.js";
+import { JSONConverter } from "datatable/convertables/JsonConverter.js";
+import { CSVConverter } from "datatable/convertables/CSVConverter.js";
 
 export class DataTableCreator {
-    static emptyTable(): IDataTable {
-        return new DataTable(undefined);
-    }
+  static emptyTable(): IDataTable {
+    return new DataTable(undefined);
+  }
 
-    static fromJson(data: Object[], options?: DataTableOptions): IDataTable {
-        const table = new DataTable(options);
-        table.data = data;
-        return table;
-    }
+  static fromJSON(
+    convertableData: JSONConverter,
+    options?: DataTableOptions
+  ): IDataTable {
+    const table = new DataTable(convertableData, options);
+    return table;
+  }
+
+  static fromCSV(
+    convertableData: CSVConverter,
+    options?: DataTableOptions
+  ): IDataTable {
+    const table = new DataTable(convertableData, options);
+    return table;
+  }
 }

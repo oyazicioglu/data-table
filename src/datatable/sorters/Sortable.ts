@@ -1,10 +1,13 @@
-import { IRow } from '../../index.js';
+import { IRow } from "../../index.js";
 
-export enum SortDirection {
-    Asc,
-    Desc,
-}
+const SortDirections = {
+  Asc: "ASC",
+  Desc: "DESC",
+} as const;
+
+export type SortDirection =
+  (typeof SortDirections)[keyof typeof SortDirections];
 
 export interface Sortable {
-    sort(direction: SortDirection, columnIndex: number, rows: IRow[]): IRow[];
+  sort(direction: SortDirection, columnIndex: number, rows: IRow[]): IRow[];
 }

@@ -1,175 +1,150 @@
-import { IRow, IColumn, Row, SortDirection, Sortable } from '../../index.js';
+import { Convertable } from "datatable/convertables/Convertable.js";
+import { IRow, IColumn, Row, SortDirection, Sortable } from "../../index.js";
 import {
-    onFilteredRowsChanged,
-    onRowsSorted,
-    onFilterCriteriaChanged,
-    onSearchCriteriaChanged,
-    onReset,
-} from './GlobalEvents.js';
-import { IDataTable, DataTableOptions } from './IDataTable.js';
+  onFilteredRowsChanged,
+  onRowsSorted,
+  onFilterCriteriaChanged,
+  onSearchCriteriaChanged,
+  onReset,
+} from "./GlobalEvents.js";
+import { IDataTable, DataTableOptions } from "./IDataTable.js";
 
 export class DataTable implements IDataTable {
-    private _options: DataTableOptions;
-    public get options(): DataTableOptions {
-        return this._options;
-    }
-    public set options(v: DataTableOptions) {
-        this._options = v;
-    }
+  private _options: DataTableOptions;
+  public get options(): DataTableOptions {
+    return this._options;
+  }
+  public set options(v: DataTableOptions) {
+    this._options = v;
+  }
 
-    private _rows: IRow[] = [];
-    public get rows(): IRow[] {
-        return this._rows;
+  private _rows: IRow[] = [];
+  public get rows(): IRow[] {
+    return this._rows;
+  }
+  public set rows(v: IRow[]) {
+    this._rows = v;
+    if (v !== this._filteredRows) {
+      this.filteredRows = v;
     }
-    public set rows(v: IRow[]) {
-        this._rows = v;
+  }
+
+  private _columns: IColumn[] = [];
+  public get columns(): IColumn[] {
+    return this._columns;
+  }
+  public set columns(v: IColumn[]) {
+    this._columns = v;
+  }
+
+  private _filteredRows: IRow[] = [];
+  public get filteredRows(): IRow[] {
+    return this._filteredRows;
+  }
+  public set filteredRows(v: IRow[]) {
+    this._filteredRows = v;
+    onFilteredRowsChanged.notify(v);
+  }
+
+  private _globalSearchCriteria: string = "";
+  public get globalSearchCriteria(): string {
+    return this._globalSearchCriteria;
+  }
+  public set globalSearchCriteria(v: string) {
+    if (this._globalSearchCriteria !== v) {
+      this._globalSearchCriteria = v;
+      this.globalSearch();
+    } else {
+      this.rowSearch();
+      this.columnSearch();
     }
+  }
 
-    private _columns: IColumn[] = [];
-    public get columns(): IColumn[] {
-        return this._columns;
-    }
-    public set columns(v: IColumn[]) {
-        this._columns = v;
-    }
-
-    private _filteredRows: IRow[] = [];
-    public get filteredRows(): IRow[] {
-        return this._filteredRows;
-    }
-    public set filteredRows(v: IRow[]) {
-        this._filteredRows = v;
-        onFilteredRowsChanged.Notify(v);
-    }
-
-    private _globalSearchCriteria: string = '';
-    public get globalSearchCriteria(): string {
-        return this._globalSearchCriteria;
-    }
-    public set globalSearchCriteria(v: string) {
-        if (this._globalSearchCriteria !== v) {
-            this._globalSearchCriteria = v;
-            this.globalSearch();
-        } else {
-            this.rowSearch();
-            this.columnSearch();
-        }
-    }
-
-    private _data: Object[] = [];
-    public get data(): Object[] {
-        return this._data;
-    }
-    public set data(v: Object[]) {
-        if (this._data === v) {
-            return;
-        }
-        this.reset();
-        this._data = v;
-        this.fromJson(v);
-    }
-
-    constructor(options?: DataTableOptions) {
-        if (options) {
-            this._options = options;
-        } else {
-            this._options = {
-                hasGlobalSearch: false,
-                hasPagination: false,
-            };
-        }
-
-        onRowsSorted.Subscribe((sort) => {
-            this.sort(sort.direction, sort.index, sort.sorter);
-        });
-
-        onFilterCriteriaChanged.Subscribe((data) => {
-            this.globalSearch();
-        });
-
-        onSearchCriteriaChanged.Subscribe((data) => {
-            this.globalSearch();
-        });
-
-        if (options) {
-            this.options = options;
-        }
-
-        this.columns = [];
-        this.rows = [];
+  constructor(convertableData?: Convertable, options?: DataTableOptions) {
+    if (options) {
+      this._options = options;
+    } else {
+      this._options = {
+        hasGlobalSearch: false,
+        hasPagination: false,
+      };
     }
 
-    reset() {
-        this.filteredRows = [];
-        this.globalSearchCriteria = '';
-        this.columns.forEach((column) => {
-            column.reset();
-        });
-        onReset.Notify(this.rows);
+    onRowsSorted.subscribe((sort) => {
+      this.sort(sort.direction, sort.index, sort.sorter);
+    });
+
+    onFilterCriteriaChanged.subscribe((data) => {
+      this.globalSearch();
+    });
+
+    onSearchCriteriaChanged.subscribe((data) => {
+      this.globalSearch();
+    });
+
+    if (options) {
+      this.options = options;
     }
 
-    globalSearch() {
-        if (this.globalSearchCriteria === '') {
-            this.filteredRows = this.rows;
-            this.columnSearch();
-            return;
-        }
+    if (convertableData) {
+      this.rows = convertableData.convert();
+    } else {
+      this.columns = [];
+      this.rows = [];
+    }
+  }
 
-        this.rowSearch();
-        this.columnSearch();
+  reset() {
+    this.filteredRows = [];
+    this.globalSearchCriteria = "";
+    this.columns.forEach((column) => {
+      column.reset();
+    });
+    onReset.notify(this.rows);
+  }
+
+  globalSearch() {
+    if (this.globalSearchCriteria === "") {
+      this.filteredRows = this.rows;
+      this.columnSearch();
+      return;
     }
 
-    private rowSearch() {
-        this.filteredRows = this.rows.filter((row) =>
-            row.search(this.globalSearchCriteria, this.columns)
-        );
+    this.rowSearch();
+    this.columnSearch();
+  }
+
+  private rowSearch() {
+    this.filteredRows = this.rows.filter((row) =>
+      row.search(this.globalSearchCriteria, this.columns)
+    );
+  }
+
+  columnSearch() {
+    if (this.rows.length === this.filteredRows.length) {
+      return;
     }
 
-    private fromJson(jsonData: Object[]) {
-        let rows: IRow[] = [];
-        jsonData.forEach((datum) => {
-            let values: string[] = [];
-            let id = '';
-            for (const [key, value] of Object.entries(datum)) {
-                values.push(value);
-                if (key === 'id') {
-                    id = value;
-                }
-            }
+    let foundRows = [...this.filteredRows];
+    this.columns.forEach((column) => {
+      foundRows = column.search(foundRows);
+    });
 
-            const newRow = new Row(id, values, {
-                selectable: true,
-                visible: true,
-            });
+    this.filteredRows = Array.from(new Set(foundRows));
+  }
 
-            for (const [key, value] of Object.entries(datum)) {
-                newRow[key] = value;
-            }
-
-            rows.push(newRow);
-        });
-
-        this.filteredRows = rows;
-        this.rows = rows;
+  sort(direction: SortDirection, columnIndex: number, sorter: Sortable) {
+    if (sorter) {
+      this.filteredRows = sorter.sort(
+        direction,
+        columnIndex,
+        this.filteredRows
+      );
     }
+  }
 
-    columnSearch() {
-        let foundRows = [...this.filteredRows];
-        this.columns.forEach((column) => {
-            foundRows = column.search(foundRows);
-        });
-
-        this.filteredRows = Array.from(new Set(foundRows));
-    }
-
-    sort(direction: SortDirection, columnIndex: number, sorter: Sortable) {
-        if (sorter) {
-            this.filteredRows = sorter.sort(direction, columnIndex, this.filteredRows);
-        }
-    }
-
-    gotoPage(page: number, pageSize: number) {
-        const pageRecords = this.rows.slice((page - 1) * pageSize, page * pageSize);
-        this.filteredRows = pageRecords;
-    }
+  gotoPage(page: number, pageSize: number) {
+    const pageRecords = this.rows.slice((page - 1) * pageSize, page * pageSize);
+    this.filteredRows = pageRecords;
+  }
 }

@@ -1,6 +1,6 @@
 {
     "name": "qei-datatable",
-    "version": "0.1.14",
+    "version": "0.2.00",
     "description": "Data Table Logic",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -32,6 +32,6 @@
         "url": "https://github.com/oyazicioglu/data-table.git"
     },
     "dependencies": {
-        "qei-event-system": "^0.1.3"
+        "qei-event-system": "^0.1.4"
     }
 }

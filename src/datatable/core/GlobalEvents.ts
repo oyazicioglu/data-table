@@ -1,16 +1,19 @@
-import { ISubject, Subject } from 'qei-event-system';
-import { IRow, SortDirection, Sortable } from '../../index.js';
+import { IObservable, Obserbable } from "qei-event-system";
+import { IRow, SortDirection, Sortable } from "../../index.js";
 
-export const onFilteredRowsChanged: ISubject<IRow[]> = new Subject();
-export const onRowsSorted: ISubject<{ sorter: Sortable; index: number; direction: SortDirection }> =
-    new Subject();
-export const onRowsChanged: ISubject<IRow[]> = new Subject();
-export const onReset: ISubject<IRow[]> = new Subject();
+export const onFilteredRowsChanged: IObservable<IRow[]> = new Obserbable();
+export const onRowsSorted: IObservable<{
+  sorter: Sortable;
+  index: number;
+  direction: SortDirection;
+}> = new Obserbable();
+export const onRowsChanged: IObservable<IRow[]> = new Obserbable();
+export const onReset: IObservable<IRow[]> = new Obserbable();
 
-export const onFilterCriteriaChanged: ISubject<undefined> = new Subject();
-export const onSearchCriteriaChanged: ISubject<undefined> = new Subject();
+export const onFilterCriteriaChanged: IObservable<undefined> = new Obserbable();
+export const onSearchCriteriaChanged: IObservable<undefined> = new Obserbable();
 
-export const onTotalRecordChanged: ISubject<number> = new Subject();
-export const onPageChanged: ISubject<number> = new Subject();
-export const onPageSizeChanged: ISubject<number> = new Subject();
-export const onTotalPagesChanged: ISubject<number> = new Subject();
+export const onTotalRecordChanged: IObservable<number> = new Obserbable();
+export const onPageChanged: IObservable<number> = new Obserbable();
+export const onPageSizeChanged: IObservable<number> = new Obserbable();
+export const onTotalPagesChanged: IObservable<number> = new Obserbable();
