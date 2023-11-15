@@ -1,4 +1,4 @@
-import { IObservable } from "qei-event-system";
+import { IObservable } from "@qei/event-system";
 import { IRow, Sortable } from "../../index.js";
 
 export type ColumnOptions = {

@@ -35,7 +35,7 @@ import type { Sortable, SortDirection } from "./datatable/sorters/Sortable.js";
 import { SorterCreator } from "./datatable/sorters/SorterCreator.js";
 import { StringSorter } from "./datatable/sorters/StringSorter.js";
 import type { Convertable } from "datatable/convertables/Convertable.js";
-import { JSONConverter } from "datatable/convertables/JsonConverter.js";
+import { JSONConverter } from "datatable/convertables/JSONConverter.js";
 import { CSVConverter } from "datatable/convertables/CSVConverter.js";
 
 export {

@@ -1,6 +1,6 @@
 import { DataTable } from "./DataTable.js";
 import { DataTableOptions, IDataTable } from "./IDataTable.js";
-import { JSONConverter } from "datatable/convertables/JsonConverter.js";
+import { JSONConverter } from "datatable/convertables/JSONConverter.js";
 import { CSVConverter } from "datatable/convertables/CSVConverter.js";
 
 export class DataTableCreator {

@@ -1,4 +1,4 @@
-import { IObservable, Obserbable } from "qei-event-system";
+import { IObservable, Obserbable } from "@qei/event-system";
 import {
   IRow,
   Sortable,
