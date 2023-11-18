@@ -74,23 +74,23 @@ export class DataTable implements IDataTable {
       this.sort(sort.direction, sort.index, sort.sorter);
     });
 
-    onFilterCriteriaChanged.subscribe((data) => {
+    onFilterCriteriaChanged.subscribe(() => {
       this.globalSearch();
     });
 
-    onSearchCriteriaChanged.subscribe((data) => {
+    onSearchCriteriaChanged.subscribe(() => {
       this.globalSearch();
     });
-
-    if (options) {
-      this.options = options;
-    }
 
     if (convertableData) {
-      this.rows = convertableData.convert();
+      const convertedRows = convertableData.convert();
+      this._rows = convertedRows;
+      this._filteredRows = convertedRows;
+      onFilteredRowsChanged.notify(convertedRows);
     } else {
-      this.columns = [];
-      this.rows = [];
+      this._columns = [];
+      this._rows = [];
+      onFilteredRowsChanged.notify([]);
     }
   }
 
